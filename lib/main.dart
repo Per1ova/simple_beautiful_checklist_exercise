@@ -8,7 +8,6 @@ void main() async {
   // Wird benötigt, um auf SharedPreferences zuzugreifen
   WidgetsFlutterBinding.ensureInitialized();
 
-  // TODO: Hier statt MockDatabaseRepository() ein SharedPreferencesRepository() verwenden.
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   DatabaseRepository repository = SharedPreferencesRepository(prefs);
 
