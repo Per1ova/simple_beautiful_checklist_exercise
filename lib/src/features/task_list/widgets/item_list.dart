@@ -50,10 +50,14 @@ class ItemList extends StatelessWidget {
                           ),
                           TextButton(
                             child: const Text('Speichern'),
-                            onPressed: () {
-                              repository.editItem(index, editController.text);
+                            onPressed: () async {
+                              final navigator = Navigator.of(context);
+                              await repository.editItem(
+                                index,
+                                editController.text,
+                              );
                               updateOnChange();
-                              Navigator.of(context).pop();
+                              navigator.pop();
                             },
                           ),
                         ],
@@ -64,8 +68,8 @@ class ItemList extends StatelessWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.delete),
-                onPressed: () {
-                  repository.deleteItem(index);
+                onPressed: () async {
+                  await repository.deleteItem(index);
                   updateOnChange();
                 },
               ),
