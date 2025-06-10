@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_beautiful_checklist_exercise/data/database_repository.dart';
-import 'package:simple_beautiful_checklist_exercise/data/mock_database_repository.dart';
+import 'package:simple_beautiful_checklist_exercise/data/shared_preferences_repository.dart';
 import 'package:simple_beautiful_checklist_exercise/src/app.dart';
 
 void main() async {
@@ -8,7 +9,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // TODO: Hier statt MockDatabaseRepository() ein SharedPreferencesRepository() verwenden.
-  final DatabaseRepository repository = MockDatabaseRepository();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  DatabaseRepository repository = SharedPreferencesRepository(prefs);
 
   runApp(App(repository: repository));
 }
