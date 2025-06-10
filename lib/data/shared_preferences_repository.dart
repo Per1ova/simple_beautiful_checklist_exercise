@@ -7,6 +7,7 @@ class SharedPreferencesRepository implements DatabaseRepository {
   SharedPreferencesRepository(this._prefs);
 
   static const String _key = 'items';
+  static const String _deletedKey = 'deleted_count';
 
   @override
   Future<void> addItem(String item) async {
@@ -18,8 +19,11 @@ class SharedPreferencesRepository implements DatabaseRepository {
   @override
   Future<void> deleteItem(int index) async {
     final items = await getItems();
-    items.removeAt(index);
-    await _prefs.setStringList(_key, items);
+    if (index >= 0 && index < items.length) {
+      items.removeAt(index);
+      await _prefs.setStringList(_key, items);
+      await incrementDeletedCount();
+    }
   }
 
   @override
@@ -41,5 +45,15 @@ class SharedPreferencesRepository implements DatabaseRepository {
   Future<List<String>> getItems() async {
     return _prefs.getStringList(_key) ?? [];
   }
+
+  Future<int> getDeletedCount() async {
+    return _prefs.getInt(_deletedKey) ?? 0;
+  }
+  Future<void> incrementDeletedCount() async {
+    final currentCount = await getDeletedCount();
+    await _prefs.setInt(_deletedKey, currentCount + 1);
+  }
+
+  
   
 }
